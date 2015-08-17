@@ -8,6 +8,7 @@ var debug = function(msg) {
 angular.module('instagramSearcher', [])
   .controller('inputCtrl', function($scope) {
         $scope.input = {
+          inputText: '',
           searchText: ''
         };
         $scope.searching = false;
@@ -23,6 +24,8 @@ angular.module('instagramSearcher', [])
             } else {
                 debug('All inputs are OK');
                 $scope.errorMsg = '';
+                $scope.input.searchText = $scope.input.inputText;
+                $scope.input.inputText = '';
                 $scope.searching = true;
             }
 
