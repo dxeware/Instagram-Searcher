@@ -10,6 +10,7 @@ angular.module('instagramSearcher', [])
         $scope.input = {
           searchText: ''
         };
+        $scope.searching = false;
 
         // Validity checking of answers and show story is OK
         $scope.submit = function() {
@@ -22,6 +23,7 @@ angular.module('instagramSearcher', [])
             } else {
                 debug('All inputs are OK');
                 $scope.errorMsg = '';
+                $scope.searching = true;
             }
 
         };

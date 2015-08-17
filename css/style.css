@@ -21,6 +21,14 @@ body {
   text-align: center;
 }
 
+.flow .searching {
+  height: auto;
+  width: 150px;
+  border-style: solid;
+  padding: 1em 0;
+  text-align: center;
+}
+
 .flow .results {
   height: auto;
   width: 150px;
