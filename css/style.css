@@ -46,6 +46,8 @@ body {
   margin-top: 0.5em;
 }
 
-.inputs {
-
+.error {
+  color: red;
+  font-weight: bold;
+  font-size: 14px;
 }
