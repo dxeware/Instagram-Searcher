@@ -1,0 +1,51 @@
+body {
+  margin: 5em 5em;
+  font-family: "Lucida Grande", Arial, Serif;
+}
+
+.flow {
+    display: flex;
+}
+
+.flow .title {
+  height: auto;
+  width: 150px;
+  border-style: solid;
+}
+
+.flow .inputs {
+  height: auto;
+  width: 150px;
+  border-style: solid;
+  padding: 1em 0;
+  text-align: center;
+}
+
+.flow .results {
+  height: auto;
+  width: 150px;
+  border-style: solid;
+  text-align: center;
+}
+
+.flow .image-array {
+  height: auto;
+  width: 150px;
+  border-style: solid;
+}
+
+.flow .stretch {
+    flex: 1;
+}
+
+.title-image {
+  height: 10em;
+  background: url("../images/ng-instagram.png") center no-repeat;
+  background-size: 50%;
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+}
+
+.inputs {
+
+}
