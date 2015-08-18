@@ -5,7 +5,7 @@ var debug = function(msg) {
   }
 };
 
-angular.module('instagramSearcher', [])
+angular.module('instagramSearcher', ['ngAnimate'])
   .controller('inputCtrl', function($scope) {
         $scope.input = {
           inputText: '',
