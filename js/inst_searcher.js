@@ -16,7 +16,7 @@ angular.module('instagramSearcher', ['ngAnimate'])
     $scope.numResults = 0;
     $scope.href_url = '';
     $scope.image_url = '';
-    $scope.result = {};
+    $scope.results = {};
 
     function wait() {
       return $q(function(resolve, reject){
@@ -73,19 +73,18 @@ angular.module('instagramSearcher', ['ngAnimate'])
           })
           .success(function(result) {
             debug("Instagram API Success");
-            $scope.result = result;
+            $scope.results = result;
 
             // Check result code
-            if ($scope.result.meta.code === 200) {
+            if ($scope.results.meta.code === 200) {
 
-              // Check if we actually found some images
-              if ($scope.result.data.length > 0) {
-                notify().then(function(result) {
-                  //$scope.searching = false;
-                  $scope.numResults = $scope.result.data.length;
+              // Check if images were found
+              if ($scope.results.data.length > 0) {
+                notify().then(function() {
+                  $scope.numResults = $scope.results.data.length;
                   $scope.searchSuccess = true;
-                  $scope.href_url = $scope.result.data[0].link;
-                  $scope.image_url = $scope.result.data[0].images.standard_resolution.url;
+                  $scope.href_url = $scope.results.data[0].link;
+                  $scope.image_url = $scope.results.data[0].images.standard_resolution.url;
                 });
               } else {
                 $scope.searching = false;
@@ -93,11 +92,12 @@ angular.module('instagramSearcher', ['ngAnimate'])
               }
             } else {
               $scope.searching = false;
-              $scope.errorMsg = "Error: " + $scope.result.meta.error_message;
+              $scope.errorMsg = "Error: " + $scope.results.meta.error_message;
             }
           })
           .error(function() {
             debug('Instagram API errorMsg');
+            $scope.errorMsg = "Error: the call to the server has FAILED!";
           });
 
 
