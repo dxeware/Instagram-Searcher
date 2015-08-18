@@ -82,10 +82,10 @@ body {
   text-align: center;
 }
 
-.flow .image-array {
+/* .flow .image-array {
   height: auto;
   width: 150px;
-}
+} */
 
 .flow .stretch {
     flex: 1;
@@ -103,4 +103,10 @@ body {
   color: red;
   font-weight: bold;
   font-size: 14px;
+}
+
+.image-array img {
+  padding: 6px;
+  width: 15em;
+  height: 15em;
 }

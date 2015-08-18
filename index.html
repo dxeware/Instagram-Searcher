@@ -36,15 +36,14 @@
       </div>
     </section>
     <section class="flow">
-      <div class="results stretch">
-        <p> We found X results for "..."
+      <div class="results stretch" ng-show="searchSuccess">
+        <p> We found {{ numResults }} results for "{{ input.searchText }}"
         </p>
       </div>
     </section>
-    <section class="flow">
-      <div class="image-array stretch">
-        <p> Images...
-        </p>
+    <section>
+      <div class="image-array" ng-show="searchSuccess" >
+        <a ng-repeat="data in result.data" href="{{ data.link }}"><img src="{{ data.images.standard_resolution.url }}">
       </div>
     </section>
   </section>
