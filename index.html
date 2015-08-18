@@ -31,7 +31,7 @@
       </div>
     </section>
     <section class="flow">
-      <div class="arrow stretch">
+      <div class="arrow stretch" ng-show="searching">
         <img class="arrow-image" src="./images/red-arrow.svg" alt="Arrow" ng-show="searching">
       </div>
     </section>
@@ -42,8 +42,8 @@
       </div>
     </section>
     <section>
-      <div class="image-array" ng-show="searchSuccess" >
-        <a ng-repeat="data in result.data" href="{{ data.link }}"><img src="{{ data.images.standard_resolution.url }}">
+      <div class="image-array" ng-if="searchSuccess">
+        <a ng-if="searchSuccess" ng-repeat="data in result.data" href="{{ data.link }}"><img src="{{ data.images.standard_resolution.url }}">
       </div>
     </section>
   </section>

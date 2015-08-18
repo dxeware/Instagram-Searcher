@@ -5,51 +5,62 @@ var debug = function(msg) {
   }
 };
 
-function sleep(milliseconds) {
-  var start = new Date().getTime();
-  for (var i = 0; i < 1e7; i++) {
-    if ((new Date().getTime() - start) > milliseconds){
-      break;
-    }
-  }
-}
-
 angular.module('instagramSearcher', ['ngAnimate'])
-  .controller('inputCtrl', function($scope, $http) {
-        $scope.input = {
-          inputText: '',
-          searchText: ''
-        };
-        $scope.searching = false;
+  .controller('inputCtrl', function($scope, $timeout, $q, $http) {
+    $scope.input = {
+      inputText: '',
+      searchText: ''
+    };
+    $scope.searching = false;
+    $scope.searchSuccess = false;
+    $scope.numResults = 0;
+    $scope.href_url = '';
+    $scope.image_url = '';
+    $scope.result = {};
+
+    function wait() {
+      return $q(function(resolve, reject){
+        $timeout(function() {
+          resolve();
+        }, 5000);
+      });
+    }
+
+    // Notify user that search is happening
+    function notify() {
+      $scope.searching = true;
+      return wait().then(function() {
+         $scope.searching = false;
+      });
+    }
+
+    // Validity checking of input
+    $scope.formValidation = function() {
+      console.log("Form valid = " + $scope.myForm.$valid);
+      if( !$scope.myForm.$valid ) {
+        $scope.errorMsg = "All inputs are required!";
+        debug($scope.errorMsg);
+        return false;
+      } else {
+        debug('All inputs are OK');
+        $scope.errorMsg = '';
+        return true;
+      }
+
+    };
+
+    $scope.submit = function() {
+        console.log("Caught form submission!");
+
         $scope.searchSuccess = false;
-        $scope.numResults = 0;
-        $scope.href_url = '';
-        $scope.image_url = '';
-        $scope.result = {};
 
-        // Validity checking of answers and show story is OK
-        $scope.submit = function() {
-            console.log("Caught form submission!");
+        //Validate the form input
+        if ($scope.formValidation()) {
+          $scope.input.searchText = $scope.input.inputText;
+          $scope.input.inputText = '';
+          //$scope.searching = true;
 
-            console.log("Form valid = " + $scope.myForm.$valid);
-            if( !$scope.myForm.$valid ) {
-              $scope.errorMsg = "All inputs are required!";
-              debug($scope.errorMsg);
-            } else {
-                debug('All inputs are OK');
-                $scope.errorMsg = '';
-                $scope.input.searchText = $scope.input.inputText;
-                $scope.input.inputText = '';
-                $scope.searching = true;
-                sleep(100000000000);
-                $scope.searchTag($scope.input.searchText);
-            }
-
-        };
-
-        $scope.searchTag = function(text) {
-          var url = "https://api.instagram.com/v1/tags/" + text + "/media/recent";
-          debug("url = " + url);
+          var url = "https://api.instagram.com/v1/tags/" + $scope.input.searchText + "/media/recent";
           var request = {
             callback: 'JSON_CALLBACK',
             client_id: '6b80d06561f948c59dfff1b843ab12f6'
@@ -62,19 +73,36 @@ angular.module('instagramSearcher', ['ngAnimate'])
           })
           .success(function(result) {
             debug("Instagram API Success");
-            $scope.displayImages(result);
+            $scope.result = result;
 
+            // Check result code
+            if ($scope.result.meta.code === 200) {
+
+              // Check if we actually found some images
+              if ($scope.result.data.length > 0) {
+                notify().then(function(result) {
+                  //$scope.searching = false;
+                  $scope.numResults = $scope.result.data.length;
+                  $scope.searchSuccess = true;
+                  $scope.href_url = $scope.result.data[0].link;
+                  $scope.image_url = $scope.result.data[0].images.standard_resolution.url;
+                });
+              } else {
+                $scope.searching = false;
+                $scope.errorMsg = 'No results were found for "' + $scope.input.searchText + '"';
+              }
+            } else {
+              $scope.searching = false;
+              $scope.errorMsg = "Error: " + $scope.result.meta.error_message;
+            }
           })
           .error(function() {
             debug('Instagram API errorMsg');
           });
-        };
 
-        $scope.displayImages = function(result) {
-          $scope.numResults = result.data.length;
-          $scope.searchSuccess = true;
-          $scope.result = result;
-          $scope.href_url = result.data[0].link;
-          $scope.image_url = result.data[0].images.standard_resolution.url;
-        };
+
+        }
+
+    };
+
 });
