@@ -14,8 +14,6 @@ angular.module('instagramSearcher', ['ngAnimate'])
     $scope.searching = false;
     $scope.searchSuccess = false;
     $scope.numResults = 0;
-    $scope.href_url = '';
-    $scope.image_url = '';
     $scope.results = {};
 
     function wait() {
@@ -89,8 +87,6 @@ angular.module('instagramSearcher', ['ngAnimate'])
                 notify().then(function() {
                   $scope.numResults = $scope.results.data.length;
                   $scope.searchSuccess = true;
-                  $scope.href_url = $scope.results.data[0].link;
-                  $scope.image_url = $scope.results.data[0].images.standard_resolution.url;
                 });
               } else {
                 $scope.searching = false;
