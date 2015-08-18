@@ -36,7 +36,7 @@ angular.module('instagramSearcher', ['ngAnimate'])
 
     // Validity checking of input
     $scope.formValidation = function() {
-      console.log("Form valid = " + $scope.myForm.$valid);
+      debug("Form valid = " + $scope.myForm.$valid);
       if( !$scope.myForm.$valid ) {
         $scope.errorMsg = "All inputs are required!";
         debug($scope.errorMsg);
@@ -50,7 +50,7 @@ angular.module('instagramSearcher', ['ngAnimate'])
     };
 
     $scope.submit = function() {
-        console.log("Caught form submission!");
+        debug("Caught form submission!");
 
         $scope.searchSuccess = false;
 
