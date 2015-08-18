@@ -56,10 +56,14 @@ angular.module('instagramSearcher', ['ngAnimate'])
 
         //Validate the form input
         if ($scope.formValidation()) {
-          $scope.input.searchText = $scope.input.inputText;
+          // Saving input text and removing any white space if present
+          // Also, clearing input field
+          debug("Orig text = " + $scope.input.inputText);
+          $scope.input.searchText = ($scope.input.inputText).replace(/\s+/, "");
+          debug("trimmed text = " + $scope.input.searchText);
           $scope.input.inputText = '';
-          //$scope.searching = true;
 
+          // API url and parameters
           var url = "https://api.instagram.com/v1/tags/" + $scope.input.searchText + "/media/recent";
           var request = {
             callback: 'JSON_CALLBACK',
@@ -80,6 +84,8 @@ angular.module('instagramSearcher', ['ngAnimate'])
 
               // Check if images were found
               if ($scope.results.data.length > 0) {
+                // Call notify so searching msg and animation shows
+                // then add image results to the DOM
                 notify().then(function() {
                   $scope.numResults = $scope.results.data.length;
                   $scope.searchSuccess = true;
@@ -100,9 +106,7 @@ angular.module('instagramSearcher', ['ngAnimate'])
             $scope.errorMsg = "Error: the call to the server has FAILED!";
           });
 
-
         }
 
     };
-
 });
