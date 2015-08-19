@@ -1,35 +1,28 @@
 var DEBUG_MODE = true;
 var debug = function(msg) {
-  if (DEBUG_MODE === true) {
+  if (DEBUG_MODE === false) {
       console.log("DEBUG:", msg);
   }
 };
 
 angular.module('instagramSearcher', ['ngAnimate'])
-  .controller('inputCtrl', function($scope, $timeout, $q, $http) {
+  .controller('inputCtrl', function($scope, $timeout, $http) {
     $scope.input = {
       inputText: '',
       searchText: ''
     };
     $scope.searching = false;
     $scope.searchSuccess = false;
-    $scope.numResults = 0;
     $scope.results = {};
 
-    function wait() {
-      return $q(function(resolve, reject){
-        $timeout(function() {
-          resolve();
-        }, 5000);
-      });
-    }
 
-    // Notify user that search is happening
+    // Notify user that search is happening with
+    // message and animation
     function notify() {
       $scope.searching = true;
-      return wait().then(function() {
+      return $timeout(function() {
          $scope.searching = false;
-      });
+      }, 5000);
     }
 
     // Validity checking of input
@@ -85,7 +78,6 @@ angular.module('instagramSearcher', ['ngAnimate'])
                 // Call notify so searching msg and animation shows
                 // then add image results to the DOM
                 notify().then(function() {
-                  $scope.numResults = $scope.results.data.length;
                   $scope.searchSuccess = true;
                 });
               } else {
